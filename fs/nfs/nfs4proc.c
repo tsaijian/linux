@@ -7904,7 +7904,7 @@ static int nfs4_ace_encode_who(struct nfs4_ace *ace, char *buf)
 /*
  * Convert the specified (numeric) name into a u32 ID.
  *
- * Returns 0 on success.
+ * Returns true on success.
  */
 static bool numeric_name_to_id(const char *name, u32 namelen, u32 *id)
 {
@@ -7979,6 +7979,11 @@ static int nfs4_decode_nfsace4(void **data, struct nfs4_ace *ace)
 			error = -EINVAL;
 		}
 	}
+	/*
+	 * If the whotype was a value other than NFS4_ACL_WHO_NAMED
+	 * (e.g. NFS4_ACL_WHO_OWNER), then no further decoding is
+	 * required (so, no else statement).
+	 */
 
 	/*
 	 * Advance by a multiple of 4 bytes (string + padding).
