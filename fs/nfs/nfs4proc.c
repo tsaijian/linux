@@ -7823,7 +7823,7 @@ static int nfs4_acl_get_whotype(char *p, u32 len)
 
 	for (i = 0; i < ARRAY_SIZE(s2t_map); i++) {
 		if (s2t_map[i].stringlen == len &&
-				(memcmp(s2t_map[i].string, p, len) == 0))
+		    (memcmp(s2t_map[i].string, p, len) == 0))
 			return s2t_map[i].type;
 	}
 	return NFS4_ACL_WHO_NAMED;
@@ -8003,7 +8003,6 @@ static int nfs4_decode_nfsace4(void **data, struct nfs4_ace *ace)
 static int nfs4_aclbuf_decode(void *buf, size_t buflen, enum nfs4_acl_type type,
 			      struct nfs4_acl **pacl)
 {
-	// int error = 0;
 	u32 acl_flag, count;
 	u32 *p = buf;
 	struct nfs4_acl *acl;
@@ -8027,8 +8026,10 @@ static int nfs4_aclbuf_decode(void *buf, size_t buflen, enum nfs4_acl_type type,
 	acl->naces = count;
 	for (ace = acl->aces; ace < acl->aces + count; ace++) {
 		status = nfs4_decode_nfsace4((void **)&p, ace);
-		if (status)
+		if (status) {
+			kfree(acl);
 			return status;
+		}
 	}
 
 	*pacl = acl;
