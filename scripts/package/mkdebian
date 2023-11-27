@@ -118,7 +118,7 @@ else
 	packagename=linux-image
 fi
 
-debarch=
+debarch=arm64
 set_debarch
 
 email=${DEBEMAIL-$EMAIL}
